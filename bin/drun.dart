@@ -13,7 +13,7 @@ Future<void> main(List<String> arguments) async {
 
 /// Custom command runner that supports running scripts directly without 'run' subcommand
 class DrunCommandRunner extends CommandRunner<void> {
-  DrunCommandRunner() : super('drun', 'Cargo-style script runner for Dart') {
+  DrunCommandRunner() : super('drun', 'Script runner for Dart') {
     // Add drun-specific global options (verbose is already provided by artisanal)
     argParser
       ..addFlag('offline', help: 'Run pub get in offline mode')

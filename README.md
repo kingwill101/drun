@@ -1,4 +1,4 @@
-# dartrun - Cargo-style Script Runner for Dart
+# dartrun - Script Runner for Dart
 
 [![pub package](https://img.shields.io/pub/v/dartrun.svg)](https://pub.dev/packages/dartrun)
 [![CI](https://github.com/kingwill101/drun/actions/workflows/ci.yml/badge.svg)](https://github.com/kingwill101/drun/actions/workflows/ci.yml)
