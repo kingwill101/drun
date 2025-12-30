@@ -1,0 +1,16 @@
+name: drun
+description: A Cargo-style script runner for Dart with embedded manifests
+version: 1.0.0
+homepage: https://github.com/your-org/drun
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+
+dependencies:
+  artisanal: ^0.1.0-dev+5
+  crypto: ^3.0.3
+  path: ^1.9.0
+  yaml: ^3.1.2
+
+dev_dependencies:
+  test: ^1.24.0
