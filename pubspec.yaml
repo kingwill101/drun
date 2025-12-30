@@ -1,5 +1,5 @@
 name: dartrun
-description: A script runner for Dart with embedded manifests
+description: Execute single-file Dart scripts with embedded dependencies. No separate pubspec.yaml needed - just add dependencies as comments in your script and run it.
 version: 1.0.0
 homepage: https://github.com/kingwill101/drun
 funding:
