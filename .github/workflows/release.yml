@@ -1,0 +1,87 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+      - name: Build binary
+        if: runner.os != 'Windows'
+        run: dart compile exe bin/drun.dart -o drun
+      - name: Build binary (Windows)
+        if: runner.os == 'Windows'
+        run: dart compile exe bin/drun.dart -o drun.exe
+      - name: Package (Unix)
+        if: runner.os != 'Windows'
+        run: |
+          set -euo pipefail
+          chmod +x drun
+          arch="$(uname -m)"
+          case "$arch" in
+            x86_64) arch="x64" ;;
+            aarch64|arm64) arch="arm64" ;;
+          esac
+          os="linux"
+          if [ "${{ runner.os }}" = "macOS" ]; then
+            os="macos"
+          fi
+          mkdir -p dist
+          tar -czf "dist/drun-${os}-${arch}.tar.gz" drun
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $arch = $env:PROCESSOR_ARCHITECTURE
+          if ($arch -eq 'AMD64') { $arch = 'x64' }
+          elseif ($arch -eq 'ARM64') { $arch = 'arm64' }
+          $os = 'windows'
+          New-Item -ItemType Directory -Force dist | Out-Null
+          Compress-Archive -Path drun.exe -DestinationPath "dist/drun-$os-$arch.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: drun-${{ runner.os }}
+          path: dist/*
+
+  release:
+    needs: [build, publish-pub]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+      - name: Generate checksums
+        run: |
+          cd dist
+          sha256sum * > sha256sums.txt
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          fail_on_unmatched_files: true
+
+  verify-download:
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download release asset
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "${{ github.ref_name }}" -p "drun-linux-*.tar.gz"
+          tar -xzf drun-linux-*.tar.gz
+          chmod +x drun
+          ./drun --help
