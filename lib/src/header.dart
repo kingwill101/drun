@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:yaml/yaml.dart';
 
 /// Represents a parsed script header with dependencies and configuration
 class ScriptHeader {
@@ -102,6 +101,7 @@ class HeaderParser {
   
   static String? _extractPubspecBlock(List<String> lines) {
     bool inBlock = false;
+    bool foundContent = false;
     final buffer = StringBuffer();
     
     for (final line in lines) {
@@ -118,9 +118,28 @@ class HeaderParser {
           final content = trimmed.substring(3);
           // Remove only a single leading space if present (after ///)  
           final finalContent = content.startsWith(' ') ? content.substring(1) : content;
+          
+          // Empty line (just ///) ends the pubspec block if we've already found content
+          if (finalContent.trim().isEmpty && foundContent) {
+            break;
+          }
+          
+          // Skip leading empty lines before content starts
+          if (finalContent.trim().isEmpty && !foundContent) {
+            continue;
+          }
+          
+          foundContent = true;
           buffer.writeln(finalContent);
+        } else if (trimmed.startsWith('//!')) {
+          // Another directive - this could be an end marker or just another comment
+          // End the pubspec block
+          break;
         } else if (!trimmed.startsWith('//') && trimmed.isNotEmpty) {
           // Non-comment line ends the block
+          break;
+        } else if (trimmed.isEmpty && foundContent) {
+          // Blank line (no comment) ends the block
           break;
         }
       }

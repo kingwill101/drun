@@ -1,7 +1,6 @@
 #!/usr/bin/env drun
 //! dart-deps: http="^1.1.0"
 
-import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 Future<void> main(List<String> args) async {

@@ -43,6 +43,78 @@ void main() {
       expect(header.pubspecYaml, contains('yaml: ^3.1.2'));
     });
     
+    test('pubspec block stops at empty /// line', () {
+      final lines = [
+        '#!/usr/bin/env drun',
+        '//! pubspec:',
+        '/// name: test_script',
+        '/// environment:',
+        '///   sdk: ">=3.5.0 <4.0.0"',
+        '/// dependencies:',
+        '///   http: ^1.2.2',
+        '///',  // Empty /// line should end the pubspec block
+        '/// This is a doc comment that should NOT be in pubspec',
+        '/// Another doc comment',
+        '',
+        'void main() {}',
+      ];
+      
+      final header = HeaderParser.parseLines(lines);
+      
+      expect(header.isFullManifest, true);
+      expect(header.pubspecYaml, contains('name: test_script'));
+      expect(header.pubspecYaml, contains('http: ^1.2.2'));
+      expect(header.pubspecYaml, isNot(contains('doc comment')));
+      expect(header.pubspecYaml, isNot(contains('should NOT')));
+    });
+    
+    test('pubspec block stops at blank line', () {
+      final lines = [
+        '#!/usr/bin/env drun',
+        '//! pubspec:',
+        '/// name: test_script',
+        '/// dependencies:',
+        '///   yaml: ^3.1.2',
+        '',  // Blank line should end the pubspec block
+        '/// Doc comment after blank line',
+        'void main() {}',
+      ];
+      
+      final header = HeaderParser.parseLines(lines);
+      
+      expect(header.isFullManifest, true);
+      expect(header.pubspecYaml, contains('name: test_script'));
+      expect(header.pubspecYaml, isNot(contains('Doc comment')));
+    });
+    
+    test('pubspec block with complex dependencies', () {
+      final lines = [
+        '#!/usr/bin/env drun',
+        '//! pubspec:',
+        '/// name: complex_script',
+        '/// environment:',
+        '///   sdk: ">=3.5.0 <4.0.0"',
+        '/// dependencies:',
+        '///   http: ^1.2.2',
+        '///   args: ^2.6.0',
+        '///   yaml: ^3.1.2',
+        '///   path: ^1.9.0',
+        '///',
+        '',
+        '/// Script documentation',
+        'void main() {}',
+      ];
+      
+      final header = HeaderParser.parseLines(lines);
+      
+      expect(header.isFullManifest, true);
+      expect(header.pubspecYaml, contains('http: ^1.2.2'));
+      expect(header.pubspecYaml, contains('args: ^2.6.0'));
+      expect(header.pubspecYaml, contains('yaml: ^3.1.2'));
+      expect(header.pubspecYaml, contains('path: ^1.9.0'));
+      expect(header.pubspecYaml, isNot(contains('Script documentation')));
+    });
+    
     test('handles empty dependencies', () {
       final lines = [
         '#!/usr/bin/env drun',
