@@ -1,5 +1,10 @@
 # dartrun - Cargo-style Script Runner for Dart
 
+[![pub package](https://img.shields.io/pub/v/dartrun.svg)](https://pub.dev/packages/dartrun)
+[![CI](https://github.com/kingwill101/drun/actions/workflows/ci.yml/badge.svg)](https://github.com/kingwill101/drun/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-support-orange.svg)](https://www.buymeacoffee.com/kingwill101)
+
 `dartrun` is a Cargo-inspired script runner for Dart that allows you to run single-file Dart scripts with embedded dependency manifests. Just like `cargo-script` or Rust's RFC 3424, `dartrun` materializes temporary packages, caches build artifacts, and provides near-zero startup time for subsequent runs.
 
 ## Features
@@ -20,7 +25,7 @@ dart pub global activate dartrun
 Or build from source:
 
 ```bash
-git clone https://github.com/kingwill101/dartrun.git
+git clone https://github.com/kingwill101/drun.git
 cd dartrun
 dart pub get
 dart compile exe bin/drun.dart -o dartrun
