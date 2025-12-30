@@ -1,13 +1,13 @@
 name: dartrun
 description: A Cargo-style script runner for Dart with embedded manifests
-version: 1.0.0-dev.1
+version: 1.0.0
 homepage: https://github.com/kingwill101/dartrun
 
 environment:
   sdk: '>=3.5.0 <4.0.0'
 
 dependencies:
-  artisanal: ^0.1.0-dev+5
+  artisanal: ^0.1.0
   crypto: ^3.0.3
   path: ^1.9.0
   yaml: ^3.1.2

@@ -45,10 +45,10 @@ packages:
     dependency: "direct main"
     description:
       name: artisanal
-      sha256: "2c948dc64cbaad33f7bf9ce272502c942e3e2dd86f575775c2d5c8016433687d"
+      sha256: "47c0db9bb5bc584c21fca280e465beb9b4f2c4ba850c1740f8c21ab76efab581"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.0-dev+5"
+    version: "0.1.0"
   async:
     dependency: transitive
     description:
