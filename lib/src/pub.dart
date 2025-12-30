@@ -23,8 +23,10 @@ class PubManager {
   }
 
   /// Run 'dart pub get' in the specified directory
-  static Future<PubResult> pubGet(String workingDirectory,
-      {bool offline = false}) async {
+  static Future<PubResult> pubGet(
+    String workingDirectory, {
+    bool offline = false,
+  }) async {
     final args = ['pub', 'get'];
     if (offline) args.add('--offline');
 
@@ -44,11 +46,10 @@ class PubManager {
 
   /// Run 'dart pub upgrade' in the specified directory
   static Future<PubResult> pubUpgrade(String workingDirectory) async {
-    final result = await Process.run(
-      'dart',
-      ['pub', 'upgrade'],
-      workingDirectory: workingDirectory,
-    );
+    final result = await Process.run('dart', [
+      'pub',
+      'upgrade',
+    ], workingDirectory: workingDirectory);
 
     return PubResult(
       exitCode: result.exitCode,
@@ -79,11 +80,10 @@ class PubManager {
       // Create minimal lib structure that pub expects
       Directory(path.join(tempDir.path, 'lib')).createSync();
 
-      final result = Process.runSync(
-        'dart',
-        ['pub', 'deps'],
-        workingDirectory: tempDir.path,
-      );
+      final result = Process.runSync('dart', [
+        'pub',
+        'deps',
+      ], workingDirectory: tempDir.path);
 
       tempDir.deleteSync(recursive: true);
 
@@ -95,11 +95,10 @@ class PubManager {
 
   /// Get detailed info about available packages (for debugging)
   static Future<String> pubDeps(String workingDirectory) async {
-    final result = await Process.run(
-      'dart',
-      ['pub', 'deps'],
-      workingDirectory: workingDirectory,
-    );
+    final result = await Process.run('dart', [
+      'pub',
+      'deps',
+    ], workingDirectory: workingDirectory);
 
     if (result.exitCode != 0) {
       throw StateError('Failed to get pub deps: ${result.stderr}');
@@ -126,7 +125,9 @@ class PubManager {
 
   /// Setup a new Dart package in the specified directory
   static Future<PubResult> setupPackage(
-      String workingDirectory, String pubspecContent) async {
+    String workingDirectory,
+    String pubspecContent,
+  ) async {
     final directory = Directory(workingDirectory);
     if (!directory.existsSync()) {
       directory.createSync(recursive: true);

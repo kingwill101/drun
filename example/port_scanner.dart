@@ -12,11 +12,19 @@ import 'package:args/args.dart';
 
 Future<void> main(List<String> args) async {
   final parser = ArgParser()
-    ..addOption('ports',
-        abbr: 'p', help: 'Port range (e.g., 1-1000)', defaultsTo: '1-1024')
+    ..addOption(
+      'ports',
+      abbr: 'p',
+      help: 'Port range (e.g., 1-1000)',
+      defaultsTo: '1-1024',
+    )
     ..addOption('timeout', abbr: 't', help: 'Timeout in ms', defaultsTo: '200')
-    ..addOption('concurrent',
-        abbr: 'c', help: 'Concurrent connections', defaultsTo: '100')
+    ..addOption(
+      'concurrent',
+      abbr: 'c',
+      help: 'Concurrent connections',
+      defaultsTo: '100',
+    )
     ..addFlag('common', help: 'Scan only common ports', defaultsTo: false)
     ..addFlag('help', abbr: 'h', help: 'Show usage');
 
@@ -92,7 +100,8 @@ Examples:
 
   print('\n\n📊 Results:');
   print(
-      '   Scanned: ${ports.length} ports in ${stopwatch.elapsedMilliseconds}ms');
+    '   Scanned: ${ports.length} ports in ${stopwatch.elapsedMilliseconds}ms',
+  );
   print('   Open: ${openPorts.length} ports');
 
   if (openPorts.isNotEmpty) {

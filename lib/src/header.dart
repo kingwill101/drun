@@ -119,8 +119,9 @@ class HeaderParser {
           // Remove the /// prefix but preserve indentation
           final content = trimmed.substring(3);
           // Remove only a single leading space if present (after ///)
-          final finalContent =
-              content.startsWith(' ') ? content.substring(1) : content;
+          final finalContent = content.startsWith(' ')
+              ? content.substring(1)
+              : content;
 
           // Empty line (just ///) ends the pubspec block if we've already found content
           if (finalContent.trim().isEmpty && foundContent) {

@@ -13,8 +13,11 @@ import 'package:args/args.dart';
 
 void main(List<String> args) {
   final parser = ArgParser()
-    ..addOption('columns',
-        abbr: 'c', help: 'Columns to display (comma-separated)')
+    ..addOption(
+      'columns',
+      abbr: 'c',
+      help: 'Columns to display (comma-separated)',
+    )
     ..addOption('filter', abbr: 'f', help: 'Filter expression (e.g., "age>30")')
     ..addOption('limit', abbr: 'l', help: 'Limit number of rows')
     ..addOption('output', abbr: 'o', help: 'Output to JSON file')
@@ -73,8 +76,9 @@ Sample CSV content for testing:
   }
 
   final hasHeader = !(results['no-header'] as bool);
-  final headers =
-      hasHeader ? rows.first.map((e) => e.toString()).toList() : null;
+  final headers = hasHeader
+      ? rows.first.map((e) => e.toString()).toList()
+      : null;
   var dataRows = hasHeader ? rows.skip(1).toList() : rows;
 
   print('📄 File: $inputPath');
@@ -121,7 +125,10 @@ Sample CSV content for testing:
 }
 
 void _displayTable(
-    List<String>? headers, List<List<dynamic>> rows, List<int>? indices) {
+  List<String>? headers,
+  List<List<dynamic>> rows,
+  List<int>? indices,
+) {
   final displayHeaders = indices != null && headers != null
       ? indices.map((i) => headers[i]).toList()
       : headers;
@@ -160,10 +167,12 @@ void _displayTable(
     final dataRow = row
         .asMap()
         .entries
-        .map((e) => e.value
-            .toString()
-            .padRight(widths[e.key])
-            .substring(0, widths[e.key]))
+        .map(
+          (e) => e.value
+              .toString()
+              .padRight(widths[e.key])
+              .substring(0, widths[e.key]),
+        )
         .join(' │ ');
     print('│ $dataRow │');
   }
@@ -180,8 +189,9 @@ void _showStats(List<String> headers, List<List<dynamic>> rows) {
   for (var i = 0; i < headers.length; i++) {
     final values = rows.map((r) => r[i]).toList();
     final nonNull = values.where((v) => v != null && v.toString().isNotEmpty);
-    final numeric =
-        nonNull.map((v) => num.tryParse(v.toString())).whereType<num>();
+    final numeric = nonNull
+        .map((v) => num.tryParse(v.toString()))
+        .whereType<num>();
 
     print('${headers[i]}:');
     print('   Non-empty: ${nonNull.length}/${values.length}');
@@ -204,14 +214,20 @@ void _showStats(List<String> headers, List<List<dynamic>> rows) {
   }
 }
 
-void _outputJson(List<String> headers, List<List<dynamic>> rows, String path,
-    List<int>? indices) {
-  final effectiveHeaders =
-      indices != null ? indices.map((i) => headers[i]).toList() : headers;
+void _outputJson(
+  List<String> headers,
+  List<List<dynamic>> rows,
+  String path,
+  List<int>? indices,
+) {
+  final effectiveHeaders = indices != null
+      ? indices.map((i) => headers[i]).toList()
+      : headers;
 
   final jsonRows = rows.map((row) {
-    final effectiveRow =
-        indices != null ? indices.map((i) => row[i]).toList() : row;
+    final effectiveRow = indices != null
+        ? indices.map((i) => row[i]).toList()
+        : row;
     return Map.fromIterables(effectiveHeaders, effectiveRow);
   }).toList();
 

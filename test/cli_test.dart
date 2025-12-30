@@ -166,11 +166,7 @@ void main() {
 
     test('fails when script file is missing', () async {
       final missingPath = path.join(tempDir.path, 'missing.dart');
-      final result = await runDrun([
-        '--cache-dir',
-        cacheDir.path,
-        missingPath,
-      ]);
+      final result = await runDrun(['--cache-dir', cacheDir.path, missingPath]);
 
       expect(result.exitCode, isNot(0));
       expect(combinedOutput(result), contains('Script file not found'));

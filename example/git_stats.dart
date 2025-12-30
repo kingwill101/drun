@@ -11,8 +11,12 @@ import 'package:args/args.dart';
 
 Future<void> main(List<String> args) async {
   final parser = ArgParser()
-    ..addOption('days',
-        abbr: 'd', help: 'Analyze last N days', defaultsTo: '90')
+    ..addOption(
+      'days',
+      abbr: 'd',
+      help: 'Analyze last N days',
+      defaultsTo: '90',
+    )
     ..addOption('author', abbr: 'a', help: 'Filter by author')
     ..addFlag('files', abbr: 'f', help: 'Show most changed files')
     ..addFlag('help', abbr: 'h', help: 'Show usage');
@@ -62,8 +66,11 @@ Examples:
   if (authorFilter != null) commitArgs.addAll(['--author=$authorFilter']);
 
   final commits = await _runGit(repoPath, commitArgs);
-  final commitCount =
-      commits.trim().split('\n').where((l) => l.isNotEmpty).length;
+  final commitCount = commits
+      .trim()
+      .split('\n')
+      .where((l) => l.isNotEmpty)
+      .length;
 
   // Contributors
   final contributors = await _runGit(repoPath, [
@@ -74,8 +81,10 @@ Examples:
   ]);
 
   // Parse contributors
-  final contribLines =
-      contributors.trim().split('\n').where((l) => l.isNotEmpty);
+  final contribLines = contributors
+      .trim()
+      .split('\n')
+      .where((l) => l.isNotEmpty);
   final contribList = contribLines
       .map((line) {
         final match = RegExp(r'^\s*(\d+)\s+(.+)$').firstMatch(line);
@@ -92,8 +101,11 @@ Examples:
 
   // Uncommitted changes
   final status = await _runGit(repoPath, ['status', '--porcelain']);
-  final uncommitted =
-      status.trim().split('\n').where((l) => l.isNotEmpty).length;
+  final uncommitted = status
+      .trim()
+      .split('\n')
+      .where((l) => l.isNotEmpty)
+      .length;
 
   print('📊 Statistics:');
   print('   Current branch: $branch');
@@ -173,10 +185,6 @@ Examples:
 }
 
 Future<String> _runGit(String workingDir, List<String> args) async {
-  final result = await Process.run(
-    'git',
-    args,
-    workingDirectory: workingDir,
-  );
+  final result = await Process.run('git', args, workingDirectory: workingDir);
   return result.stdout.toString();
 }

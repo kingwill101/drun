@@ -60,15 +60,19 @@ void main() async {
   router.get('/todos/<id>', (Request request, String id) {
     final todoId = int.tryParse(id);
     if (todoId == null) {
-      return Response(400,
-          body: jsonEncode({'error': 'Invalid ID'}),
-          headers: {'content-type': 'application/json'});
+      return Response(
+        400,
+        body: jsonEncode({'error': 'Invalid ID'}),
+        headers: {'content-type': 'application/json'},
+      );
     }
 
     final todo = _todos.where((t) => t['id'] == todoId).firstOrNull;
     if (todo == null) {
-      return Response.notFound(jsonEncode({'error': 'Todo not found'}),
-          headers: {'content-type': 'application/json'});
+      return Response.notFound(
+        jsonEncode({'error': 'Todo not found'}),
+        headers: {'content-type': 'application/json'},
+      );
     }
 
     return Response.ok(
@@ -83,9 +87,11 @@ void main() async {
     final data = jsonDecode(body) as Map<String, dynamic>;
 
     if (!data.containsKey('title')) {
-      return Response(400,
-          body: jsonEncode({'error': 'Title is required'}),
-          headers: {'content-type': 'application/json'});
+      return Response(
+        400,
+        body: jsonEncode({'error': 'Title is required'}),
+        headers: {'content-type': 'application/json'},
+      );
     }
 
     final todo = {
@@ -95,23 +101,30 @@ void main() async {
     };
     _todos.add(todo);
 
-    return Response(201,
-        body: jsonEncode(todo), headers: {'content-type': 'application/json'});
+    return Response(
+      201,
+      body: jsonEncode(todo),
+      headers: {'content-type': 'application/json'},
+    );
   });
 
   // PUT /todos/<id> - Update a todo
   router.put('/todos/<id>', (Request request, String id) async {
     final todoId = int.tryParse(id);
     if (todoId == null) {
-      return Response(400,
-          body: jsonEncode({'error': 'Invalid ID'}),
-          headers: {'content-type': 'application/json'});
+      return Response(
+        400,
+        body: jsonEncode({'error': 'Invalid ID'}),
+        headers: {'content-type': 'application/json'},
+      );
     }
 
     final index = _todos.indexWhere((t) => t['id'] == todoId);
     if (index == -1) {
-      return Response.notFound(jsonEncode({'error': 'Todo not found'}),
-          headers: {'content-type': 'application/json'});
+      return Response.notFound(
+        jsonEncode({'error': 'Todo not found'}),
+        headers: {'content-type': 'application/json'},
+      );
     }
 
     final body = await request.readAsString();
@@ -134,15 +147,19 @@ void main() async {
   router.delete('/todos/<id>', (Request request, String id) {
     final todoId = int.tryParse(id);
     if (todoId == null) {
-      return Response(400,
-          body: jsonEncode({'error': 'Invalid ID'}),
-          headers: {'content-type': 'application/json'});
+      return Response(
+        400,
+        body: jsonEncode({'error': 'Invalid ID'}),
+        headers: {'content-type': 'application/json'},
+      );
     }
 
     final index = _todos.indexWhere((t) => t['id'] == todoId);
     if (index == -1) {
-      return Response.notFound(jsonEncode({'error': 'Todo not found'}),
-          headers: {'content-type': 'application/json'});
+      return Response.notFound(
+        jsonEncode({'error': 'Todo not found'}),
+        headers: {'content-type': 'application/json'},
+      );
     }
 
     final removed = _todos.removeAt(index);
@@ -161,16 +178,19 @@ void main() async {
   final server = await io.serve(handler, InternetAddress.anyIPv4, 8080);
 
   print(
-      '🚀 Shelf server running at http://${server.address.host}:${server.port}');
+    '🚀 Shelf server running at http://${server.address.host}:${server.port}',
+  );
   print('');
   print('Try these commands:');
   print('  curl http://localhost:8080/');
   print('  curl http://localhost:8080/todos');
   print('  curl http://localhost:8080/todos/1');
   print(
-      '  curl -X POST -H "Content-Type: application/json" -d \'{"title":"New task"}\' http://localhost:8080/todos');
+    '  curl -X POST -H "Content-Type: application/json" -d \'{"title":"New task"}\' http://localhost:8080/todos',
+  );
   print(
-      '  curl -X PUT -H "Content-Type: application/json" -d \'{"completed":true}\' http://localhost:8080/todos/1');
+    '  curl -X PUT -H "Content-Type: application/json" -d \'{"completed":true}\' http://localhost:8080/todos/1',
+  );
   print('  curl -X DELETE http://localhost:8080/todos/1');
   print('');
   print('Press Ctrl+C to stop the server');

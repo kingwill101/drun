@@ -6,7 +6,7 @@ funding:
   - https://www.buymeacoffee.com/kingwill101
 
 environment:
-  sdk: '>=3.5.0 <4.0.0'
+  sdk: '>=3.10.0 <4.0.0'
 
 dependencies:
   artisanal: ^0.1.0

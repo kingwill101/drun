@@ -17,14 +17,23 @@ class DrunCommandRunner extends CommandRunner<void> {
     // Add drun-specific global options (verbose is already provided by artisanal)
     argParser
       ..addFlag('offline', help: 'Run pub get in offline mode')
-      ..addFlag('refresh',
-          abbr: 'U', help: 'Refresh cache and re-resolve dependencies')
-      ..addFlag('aot',
-          help: 'Compile to AOT snapshot for faster subsequent runs')
-      ..addFlag('frozen',
-          help: 'Refuse to run unless pubspec.lock exists in cache')
-      ..addFlag('print-pubspec',
-          help: 'Print the resolved pubspec.yaml and exit')
+      ..addFlag(
+        'refresh',
+        abbr: 'U',
+        help: 'Refresh cache and re-resolve dependencies',
+      )
+      ..addFlag(
+        'aot',
+        help: 'Compile to AOT snapshot for faster subsequent runs',
+      )
+      ..addFlag(
+        'frozen',
+        help: 'Refuse to run unless pubspec.lock exists in cache',
+      )
+      ..addFlag(
+        'print-pubspec',
+        help: 'Print the resolved pubspec.yaml and exit',
+      )
       ..addOption('cache-dir', help: 'Override default cache directory');
 
     // Add commands
@@ -103,10 +112,12 @@ class DrunCommandRunner extends CommandRunner<void> {
     // Handle -- separator manually for script arguments
     final argList = args.toList();
     final separatorIndex = argList.indexOf('--');
-    final argsBeforeSeparator =
-        separatorIndex >= 0 ? argList.sublist(0, separatorIndex) : argList;
-    final scriptArgs =
-        separatorIndex >= 0 ? argList.sublist(separatorIndex + 1) : <String>[];
+    final argsBeforeSeparator = separatorIndex >= 0
+        ? argList.sublist(0, separatorIndex)
+        : argList;
+    final scriptArgs = separatorIndex >= 0
+        ? argList.sublist(separatorIndex + 1)
+        : <String>[];
 
     // Check if first non-option argument is a .dart file (direct script run)
     final firstArg = _firstNonOptionArg(argsBeforeSeparator);
@@ -135,8 +146,9 @@ class DrunCommandRunner extends CommandRunner<void> {
     final results = parse(args);
 
     final verbose = _isVerboseFromResults(results);
-    final cacheManager =
-        CacheManager(cacheDir: results['cache-dir'] as String?);
+    final cacheManager = CacheManager(
+      cacheDir: results['cache-dir'] as String?,
+    );
 
     final rest = results.rest;
     if (rest.isEmpty) {
@@ -289,8 +301,10 @@ class DrunCommandRunner extends CommandRunner<void> {
       if (!isAotCached || refresh) {
         if (verbose) io.info('Compiling to AOT snapshot...');
 
-        final compileResult =
-            await runner.compileAot(aotPath, verbose: verbose);
+        final compileResult = await runner.compileAot(
+          aotPath,
+          verbose: verbose,
+        );
         if (!compileResult.success) {
           io.error('Error compiling AOT: ${compileResult.stderr}');
           exit(1);
@@ -303,8 +317,11 @@ class DrunCommandRunner extends CommandRunner<void> {
 
       // Run AOT artifact
       if (verbose) io.info('Executing AOT artifact...');
-      final runResult =
-          await runner.runAot(aotPath, args: scriptArgs, verbose: verbose);
+      final runResult = await runner.runAot(
+        aotPath,
+        args: scriptArgs,
+        verbose: verbose,
+      );
 
       if (runResult.stdout.isNotEmpty) print(runResult.stdout);
       if (runResult.stderr.isNotEmpty) stderr.write(runResult.stderr);
@@ -313,8 +330,10 @@ class DrunCommandRunner extends CommandRunner<void> {
     } else {
       // Run with dart run
       if (verbose) io.info('Executing script with dart run...');
-      final runResult =
-          await runner.runScript(args: scriptArgs, verbose: verbose);
+      final runResult = await runner.runScript(
+        args: scriptArgs,
+        verbose: verbose,
+      );
 
       if (runResult.stdout.isNotEmpty) print(runResult.stdout);
       if (runResult.stderr.isNotEmpty) stderr.write(runResult.stderr);
@@ -324,7 +343,9 @@ class DrunCommandRunner extends CommandRunner<void> {
   }
 
   Future<void> _handleRunCommand(
-      List<String> args, List<String> scriptArgs) async {
+    List<String> args,
+    List<String> scriptArgs,
+  ) async {
     // Remove 'run' from args and use _runScript
     final idx = args.indexOf('run');
     final newArgs = [...args.sublist(0, idx), ...args.sublist(idx + 1)];
@@ -361,8 +382,11 @@ class CleanCommand extends Command<void> {
   CleanCommand() {
     argParser
       ..addFlag('all', help: 'Clean all cache entries')
-      ..addOption('older-than',
-          help: 'Clean entries older than N days', defaultsTo: '30');
+      ..addOption(
+        'older-than',
+        help: 'Clean entries older than N days',
+        defaultsTo: '30',
+      );
   }
 
   bool get _isVerbose {
@@ -378,8 +402,9 @@ class CleanCommand extends Command<void> {
     final globalResults = this.globalResults!;
 
     final verbose = _isVerbose;
-    final cacheManager =
-        CacheManager(cacheDir: globalResults['cache-dir'] as String?);
+    final cacheManager = CacheManager(
+      cacheDir: globalResults['cache-dir'] as String?,
+    );
 
     if (results['all'] as bool) {
       if (verbose) io.info('Cleaning all cache entries...');
@@ -421,18 +446,25 @@ class HashCommand extends Command<void> {
       exit(1);
     }
 
-    final cacheManager =
-        CacheManager(cacheDir: globalResults['cache-dir'] as String?);
+    final cacheManager = CacheManager(
+      cacheDir: globalResults['cache-dir'] as String?,
+    );
     final header = HeaderParser.parseScript(scriptPath);
     final pubspecContent = header.generatePubspecYaml();
     final dartVersion = await PubManager.getDartSdkVersion();
     final scriptContent = scriptFile.readAsStringSync();
 
     final cacheKey = cacheManager.generateCacheKey(
-        pubspecContent, dartVersion, scriptContent);
+      pubspecContent,
+      dartVersion,
+      scriptContent,
+    );
     final aotCacheKey = cacheManager.generateCacheKey(
-        pubspecContent, dartVersion, scriptContent,
-        includeArch: true);
+      pubspecContent,
+      dartVersion,
+      scriptContent,
+      includeArch: true,
+    );
     final packageDir = cacheManager.getPackageDir(cacheKey);
     final aotPath = cacheManager.getAotPath(aotCacheKey);
 

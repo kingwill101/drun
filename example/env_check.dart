@@ -46,7 +46,8 @@ Checks:
   // System info
   print('\n📱 System:');
   print(
-      '   OS: ${Platform.operatingSystem} ${Platform.operatingSystemVersion}');
+    '   OS: ${Platform.operatingSystem} ${Platform.operatingSystemVersion}',
+  );
   print('   Arch: ${_getArch()}');
   print('   Locale: ${Platform.localeName}');
 
@@ -69,14 +70,22 @@ Checks:
   _printCheck('Git', gitVersion, verbose);
 
   if (gitVersion['installed'] == true) {
-    final gitUser =
-        await _runCommand('git', ['config', '--global', 'user.name']);
-    final gitEmail =
-        await _runCommand('git', ['config', '--global', 'user.email']);
+    final gitUser = await _runCommand('git', [
+      'config',
+      '--global',
+      'user.name',
+    ]);
+    final gitEmail = await _runCommand('git', [
+      'config',
+      '--global',
+      'user.email',
+    ]);
     print(
-        '   User: ${gitUser.trim().isNotEmpty ? gitUser.trim() : '(not set)'}');
+      '   User: ${gitUser.trim().isNotEmpty ? gitUser.trim() : '(not set)'}',
+    );
     print(
-        '   Email: ${gitEmail.trim().isNotEmpty ? gitEmail.trim() : '(not set)'}');
+      '   Email: ${gitEmail.trim().isNotEmpty ? gitEmail.trim() : '(not set)'}',
+    );
   }
 
   // Other tools
@@ -105,13 +114,14 @@ Checks:
     'SHELL',
     'EDITOR',
     'DART_SDK',
-    'FLUTTER_ROOT'
+    'FLUTTER_ROOT',
   ];
   for (final varName in envVars) {
     final value = Platform.environment[varName];
     if (value != null) {
-      final display =
-          value.length > 50 ? '${value.substring(0, 47)}...' : value;
+      final display = value.length > 50
+          ? '${value.substring(0, 47)}...'
+          : value;
       print('   $varName: $display');
     } else if (verbose) {
       print('   $varName: (not set)');
@@ -152,18 +162,16 @@ Checks:
 }
 
 Future<Map<String, dynamic>> _checkCommand(
-    String command, List<String> args) async {
+  String command,
+  List<String> args,
+) async {
   try {
     final result = await Process.run(command, args);
     if (result.exitCode == 0) {
-      final output =
-          (result.stdout.toString() + result.stderr.toString()).trim();
+      final output = (result.stdout.toString() + result.stderr.toString())
+          .trim();
       final version = _extractVersion(output);
-      return {
-        'installed': true,
-        'version': version,
-        'output': output,
-      };
+      return {'installed': true, 'version': version, 'output': output};
     }
     return {'installed': false, 'error': 'Non-zero exit code'};
   } catch (e) {

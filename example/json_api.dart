@@ -14,10 +14,12 @@ const baseUrl = 'https://jsonplaceholder.typicode.com';
 
 Future<void> main(List<String> args) async {
   final parser = ArgParser()
-    ..addOption('endpoint',
-        abbr: 'e',
-        help: 'API endpoint (users, posts, comments, todos)',
-        defaultsTo: 'users')
+    ..addOption(
+      'endpoint',
+      abbr: 'e',
+      help: 'API endpoint (users, posts, comments, todos)',
+      defaultsTo: 'users',
+    )
     ..addOption('id', help: 'Fetch specific item by ID')
     ..addOption('limit', abbr: 'l', help: 'Limit results', defaultsTo: '5')
     ..addFlag('pretty', abbr: 'p', help: 'Pretty print JSON', defaultsTo: true)

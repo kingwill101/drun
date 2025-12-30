@@ -105,7 +105,7 @@ void _addTodo(List<Map<String, dynamic>> todos, String task) {
     'id': todos.isEmpty
         ? 1
         : (todos.map((t) => t['id'] as int).reduce((a, b) => a > b ? a : b) +
-            1),
+              1),
     'task': task.trim(),
     'done': false,
     'created': DateTime.now().toIso8601String(),
@@ -118,7 +118,8 @@ void _addTodo(List<Map<String, dynamic>> todos, String task) {
 void _listTodos(List<Map<String, dynamic>> todos) {
   if (todos.isEmpty) {
     print(
-        '📭 No todos yet! Add one with: dartrun todo_cli.dart -- add "Your task"');
+      '📭 No todos yet! Add one with: dartrun todo_cli.dart -- add "Your task"',
+    );
     return;
   }
 

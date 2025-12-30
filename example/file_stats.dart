@@ -13,8 +13,12 @@ import 'package:args/args.dart';
 Future<void> main(List<String> args) async {
   final parser = ArgParser()
     ..addOption('ext', abbr: 'e', help: 'Filter by extension (e.g., dart, js)')
-    ..addFlag('recursive',
-        abbr: 'r', help: 'Scan subdirectories', defaultsTo: true)
+    ..addFlag(
+      'recursive',
+      abbr: 'r',
+      help: 'Scan subdirectories',
+      defaultsTo: true,
+    )
     ..addFlag('hidden', help: 'Include hidden files', defaultsTo: false)
     ..addFlag('help', abbr: 'h', help: 'Show usage');
 
@@ -50,8 +54,10 @@ Future<void> main(List<String> args) async {
   final extensionStats = <String, int>{};
   final largestFiles = <MapEntry<String, int>>[];
 
-  await for (final entity
-      in dir.list(recursive: recursive, followLinks: false)) {
+  await for (final entity in dir.list(
+    recursive: recursive,
+    followLinks: false,
+  )) {
     if (entity is! File) continue;
 
     final name = p.basename(entity.path);
@@ -96,7 +102,8 @@ Future<void> main(List<String> args) async {
     print('\n📦 Largest Files:');
     for (final entry in largestFiles.take(5)) {
       print(
-          '   ${_formatBytes(entry.value).padLeft(10)} ${p.relative(entry.key)}');
+        '   ${_formatBytes(entry.value).padLeft(10)} ${p.relative(entry.key)}',
+      );
     }
   }
 }

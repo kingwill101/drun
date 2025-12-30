@@ -48,8 +48,10 @@ class ScriptRunner {
   }
 
   /// Compile script to AOT snapshot
-  Future<CompileResult> compileAot(String outputPath,
-      {bool verbose = false}) async {
+  Future<CompileResult> compileAot(
+    String outputPath, {
+    bool verbose = false,
+  }) async {
     final mainDart = path.join(workingDirectory, 'bin', 'main.dart');
     if (!File(mainDart).existsSync()) {
       return CompileResult(
@@ -72,7 +74,7 @@ class ScriptRunner {
       Platform.isWindows ? 'exe' : 'aot-snapshot',
       mainDart,
       '-o',
-      outputPath
+      outputPath,
     ];
 
     if (verbose) {
@@ -131,8 +133,10 @@ class ScriptRunner {
     if (runCommand.length == 1) {
       process = await Process.start(runCommand.first, runArgs);
     } else {
-      process = await Process.start(
-          runCommand.first, [...runCommand.skip(1), ...runArgs]);
+      process = await Process.start(runCommand.first, [
+        ...runCommand.skip(1),
+        ...runArgs,
+      ]);
     }
 
     final stdout = StringBuffer();

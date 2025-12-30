@@ -16,10 +16,7 @@ void main() {
       final header = HeaderParser.parseLines(lines);
 
       expect(header.isFullManifest, false);
-      expect(header.dependencies, {
-        'http': '^1.2.2',
-        'args': '^2.6.0',
-      });
+      expect(header.dependencies, {'http': '^1.2.2', 'args': '^2.6.0'});
       expect(header.sdkConstraint, '>=3.5.0 <4.0.0');
     });
 
@@ -116,10 +113,7 @@ void main() {
     });
 
     test('handles empty dependencies', () {
-      final lines = [
-        '#!/usr/bin/env drun',
-        'void main() { print("hello"); }',
-      ];
+      final lines = ['#!/usr/bin/env drun', 'void main() { print("hello"); }'];
 
       final header = HeaderParser.parseLines(lines);
 
@@ -148,9 +142,15 @@ void main() {
       final manager = CacheManager(cacheDir: '/tmp/test');
 
       final key1 = manager.generateCacheKey(
-          'pubspec content', 'dart 3.5.0', 'script content');
+        'pubspec content',
+        'dart 3.5.0',
+        'script content',
+      );
       final key2 = manager.generateCacheKey(
-          'pubspec content', 'dart 3.5.0', 'script content');
+        'pubspec content',
+        'dart 3.5.0',
+        'script content',
+      );
 
       expect(key1, equals(key2));
     });
@@ -167,10 +167,18 @@ void main() {
     test('includes architecture when requested', () {
       final manager = CacheManager(cacheDir: '/tmp/test');
 
-      final key1 = manager.generateCacheKey('pubspec', 'dart 3.5.0', 'script',
-          includeArch: false);
-      final key2 = manager.generateCacheKey('pubspec', 'dart 3.5.0', 'script',
-          includeArch: true);
+      final key1 = manager.generateCacheKey(
+        'pubspec',
+        'dart 3.5.0',
+        'script',
+        includeArch: false,
+      );
+      final key2 = manager.generateCacheKey(
+        'pubspec',
+        'dart 3.5.0',
+        'script',
+        includeArch: true,
+      );
 
       expect(key1, isNot(equals(key2)));
     });

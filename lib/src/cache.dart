@@ -8,7 +8,7 @@ class CacheManager {
   final String cacheDir;
 
   CacheManager({String? cacheDir})
-      : cacheDir = cacheDir ?? _getDefaultCacheDir();
+    : cacheDir = cacheDir ?? _getDefaultCacheDir();
 
   static String _getDefaultCacheDir() {
     final home =
@@ -21,8 +21,11 @@ class CacheManager {
 
   /// Generate cache key from pubspec content, SDK version, script content, and platform
   String generateCacheKey(
-      String pubspecContent, String dartSdkVersion, String scriptContent,
-      {bool includeArch = false}) {
+    String pubspecContent,
+    String dartSdkVersion,
+    String scriptContent, {
+    bool includeArch = false,
+  }) {
     final normalizedPubspec = _normalizePubspecContent(pubspecContent);
     final keyComponents = [
       'pubspec:$normalizedPubspec',
@@ -31,8 +34,9 @@ class CacheManager {
     ];
 
     if (includeArch) {
-      keyComponents
-          .add('platform:${Platform.operatingSystem}_${Platform.localeName}');
+      keyComponents.add(
+        'platform:${Platform.operatingSystem}_${Platform.localeName}',
+      );
     }
 
     final combined = keyComponents.join('|');
@@ -49,8 +53,8 @@ class CacheManager {
     final ext = Platform.isWindows
         ? '.exe'
         : Platform.isMacOS
-            ? '.app'
-            : '.aot';
+        ? '.app'
+        : '.aot';
     final arch = Platform.operatingSystem;
     return path.join(cacheDir, 'v1', 'aot', '${cacheKey}_$arch$ext');
   }
@@ -117,8 +121,9 @@ class CacheManager {
         foundMainFunction = true;
 
         // Extract parameter name from the function signature
-        final mainMatch =
-            RegExp(r'main\(List<String>\s+(\w+)\)').firstMatch(line);
+        final mainMatch = RegExp(
+          r'main\(List<String>\s+(\w+)\)',
+        ).firstMatch(line);
         parameterName = mainMatch?.group(1) ?? 'arguments';
 
         // Check if the main function is async
@@ -129,7 +134,8 @@ class CacheManager {
         // Add the argument filtering logic
         buffer.writeln('  // Filter out dart run\'s -- separator');
         buffer.writeln(
-            '  final filteredArgs = $parameterName.where((arg) => arg != \'--\').toList();');
+          '  final filteredArgs = $parameterName.where((arg) => arg != \'--\').toList();',
+        );
         if (isAsync) {
           buffer.writeln('  return _originalMain(filteredArgs);');
         } else {
@@ -141,11 +147,12 @@ class CacheManager {
         // Preserve the async nature of the function
         final returnType = isAsync
             ? line.contains('Future<void>')
-                ? 'Future<void>'
-                : 'Future'
+                  ? 'Future<void>'
+                  : 'Future'
             : 'void';
         buffer.writeln(
-            '$returnType _originalMain(List<String> $parameterName) ${isAsync ? 'async ' : ''}{');
+          '$returnType _originalMain(List<String> $parameterName) ${isAsync ? 'async ' : ''}{',
+        );
         continue;
       }
 
@@ -205,8 +212,10 @@ class CacheManager {
     if (aotDir.existsSync()) {
       final aotFiles = aotDir.listSync().whereType<File>().toList();
       aotCount = aotFiles.length;
-      totalSize +=
-          aotFiles.fold<int>(0, (sum, file) => sum + file.lengthSync());
+      totalSize += aotFiles.fold<int>(
+        0,
+        (sum, file) => sum + file.lengthSync(),
+      );
     }
 
     return CacheStats(
