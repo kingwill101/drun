@@ -45,7 +45,8 @@ Checks:
 
   // System info
   print('\n📱 System:');
-  print('   OS: ${Platform.operatingSystem} ${Platform.operatingSystemVersion}');
+  print(
+      '   OS: ${Platform.operatingSystem} ${Platform.operatingSystemVersion}');
   print('   Arch: ${_getArch()}');
   print('   Locale: ${Platform.localeName}');
 
@@ -66,17 +67,21 @@ Checks:
   final gitVersion = await _checkCommand('git', ['--version']);
   checks['git'] = gitVersion;
   _printCheck('Git', gitVersion, verbose);
-  
+
   if (gitVersion['installed'] == true) {
-    final gitUser = await _runCommand('git', ['config', '--global', 'user.name']);
-    final gitEmail = await _runCommand('git', ['config', '--global', 'user.email']);
-    print('   User: ${gitUser.trim().isNotEmpty ? gitUser.trim() : '(not set)'}');
-    print('   Email: ${gitEmail.trim().isNotEmpty ? gitEmail.trim() : '(not set)'}');
+    final gitUser =
+        await _runCommand('git', ['config', '--global', 'user.name']);
+    final gitEmail =
+        await _runCommand('git', ['config', '--global', 'user.email']);
+    print(
+        '   User: ${gitUser.trim().isNotEmpty ? gitUser.trim() : '(not set)'}');
+    print(
+        '   Email: ${gitEmail.trim().isNotEmpty ? gitEmail.trim() : '(not set)'}');
   }
 
   // Other tools
   print('\n🛠️  Development Tools:');
-  
+
   final tools = [
     ('node', ['--version'], 'Node.js'),
     ('npm', ['--version'], 'npm'),
@@ -94,11 +99,19 @@ Checks:
 
   // Environment variables
   print('\n🌍 Environment:');
-  final envVars = ['PATH', 'HOME', 'SHELL', 'EDITOR', 'DART_SDK', 'FLUTTER_ROOT'];
+  final envVars = [
+    'PATH',
+    'HOME',
+    'SHELL',
+    'EDITOR',
+    'DART_SDK',
+    'FLUTTER_ROOT'
+  ];
   for (final varName in envVars) {
     final value = Platform.environment[varName];
     if (value != null) {
-      final display = value.length > 50 ? '${value.substring(0, 47)}...' : value;
+      final display =
+          value.length > 50 ? '${value.substring(0, 47)}...' : value;
       print('   $varName: $display');
     } else if (verbose) {
       print('   $varName: (not set)');
@@ -109,7 +122,7 @@ Checks:
   print('\n🐚 Shell:');
   final shell = Platform.environment['SHELL'] ?? 'unknown';
   print('   Current: $shell');
-  
+
   // Check for common shell configs
   final homeDir = Platform.environment['HOME'] ?? '.';
   final configs = ['.bashrc', '.zshrc', '.config/fish/config.fish'];
@@ -138,11 +151,13 @@ Checks:
   }
 }
 
-Future<Map<String, dynamic>> _checkCommand(String command, List<String> args) async {
+Future<Map<String, dynamic>> _checkCommand(
+    String command, List<String> args) async {
   try {
     final result = await Process.run(command, args);
     if (result.exitCode == 0) {
-      final output = (result.stdout.toString() + result.stderr.toString()).trim();
+      final output =
+          (result.stdout.toString() + result.stderr.toString()).trim();
       final version = _extractVersion(output);
       return {
         'installed': true,
@@ -171,12 +186,12 @@ String _extractVersion(String output) {
     RegExp(r'(\d+\.\d+\.\d+[-\w.]*)'),
     RegExp(r'version (\S+)'),
   ];
-  
+
   for (final pattern in patterns) {
     final match = pattern.firstMatch(output);
     if (match != null) return match.group(1)!;
   }
-  
+
   return output.split('\n').first.trim();
 }
 
@@ -184,9 +199,9 @@ void _printCheck(String name, Map<String, dynamic> check, bool verbose) {
   final installed = check['installed'] == true;
   final icon = installed ? '✅' : '❌';
   final version = check['version'] ?? 'not installed';
-  
+
   print('   $icon ${name.padRight(12)} $version');
-  
+
   if (verbose && check['output'] != null) {
     final lines = check['output'].toString().split('\n');
     if (lines.length > 1) {

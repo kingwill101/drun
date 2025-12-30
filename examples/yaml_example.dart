@@ -1,6 +1,6 @@
 #!/usr/bin/env drun
 //! pubspec:
-/// name: yaml_demo  
+/// name: yaml_demo
 /// environment:
 ///   sdk: ">=3.5.0 <4.0.0"
 /// dependencies:
@@ -14,15 +14,15 @@ void main(List<String> arguments) {
   final parser = ArgParser()
     ..addOption('file', abbr: 'f', help: 'YAML file to parse')
     ..addFlag('help', abbr: 'h', help: 'Show usage');
-    
+
   final results = parser.parse(arguments);
-  
+
   if (results['help'] as bool || results['file'] == null) {
     print('Usage: yaml_demo -f <file.yaml>');
     print(parser.usage);
     return;
   }
-  
+
   final yamlContent = '''
 name: example
 version: 1.0.0
@@ -33,7 +33,7 @@ config:
   debug: true
   port: 8080
 ''';
-  
+
   try {
     final doc = loadYaml(yamlContent);
     print('Parsed YAML:');

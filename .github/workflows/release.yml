@@ -7,9 +7,20 @@ on:
 
 permissions:
   contents: write
+  id-token: write # Required for pub.dev publishing
 
 jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dart-lang/setup-dart@v1
+      - run: dart pub get
+      - name: Publish to pub.dev
+        run: dart pub publish --force
+
   build:
+    needs: publish
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false

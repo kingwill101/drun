@@ -11,7 +11,8 @@ import 'package:args/args.dart';
 
 Future<void> main(List<String> args) async {
   final parser = ArgParser()
-    ..addOption('days', abbr: 'd', help: 'Analyze last N days', defaultsTo: '90')
+    ..addOption('days',
+        abbr: 'd', help: 'Analyze last N days', defaultsTo: '90')
     ..addOption('author', abbr: 'a', help: 'Filter by author')
     ..addFlag('files', abbr: 'f', help: 'Show most changed files')
     ..addFlag('help', abbr: 'h', help: 'Show usage');
@@ -53,36 +54,46 @@ Examples:
 
   // Get commit count
   final since = DateTime.now().subtract(Duration(days: days));
-  final sinceStr = '${since.year}-${since.month.toString().padLeft(2, '0')}-${since.day.toString().padLeft(2, '0')}';
+  final sinceStr =
+      '${since.year}-${since.month.toString().padLeft(2, '0')}-${since.day.toString().padLeft(2, '0')}';
 
   // Total commits
   var commitArgs = ['log', '--oneline', '--since=$sinceStr'];
   if (authorFilter != null) commitArgs.addAll(['--author=$authorFilter']);
-  
+
   final commits = await _runGit(repoPath, commitArgs);
-  final commitCount = commits.trim().split('\n').where((l) => l.isNotEmpty).length;
+  final commitCount =
+      commits.trim().split('\n').where((l) => l.isNotEmpty).length;
 
   // Contributors
   final contributors = await _runGit(repoPath, [
-    'shortlog', '-sn', '--since=$sinceStr', 'HEAD',
+    'shortlog',
+    '-sn',
+    '--since=$sinceStr',
+    'HEAD',
   ]);
 
   // Parse contributors
-  final contribLines = contributors.trim().split('\n').where((l) => l.isNotEmpty);
-  final contribList = contribLines.map((line) {
-    final match = RegExp(r'^\s*(\d+)\s+(.+)$').firstMatch(line);
-    if (match != null) {
-      return (int.parse(match.group(1)!), match.group(2)!.trim());
-    }
-    return null;
-  }).whereType<(int, String)>().toList();
+  final contribLines =
+      contributors.trim().split('\n').where((l) => l.isNotEmpty);
+  final contribList = contribLines
+      .map((line) {
+        final match = RegExp(r'^\s*(\d+)\s+(.+)$').firstMatch(line);
+        if (match != null) {
+          return (int.parse(match.group(1)!), match.group(2)!.trim());
+        }
+        return null;
+      })
+      .whereType<(int, String)>()
+      .toList();
 
   // Current branch
   final branch = (await _runGit(repoPath, ['branch', '--show-current'])).trim();
 
   // Uncommitted changes
   final status = await _runGit(repoPath, ['status', '--porcelain']);
-  final uncommitted = status.trim().split('\n').where((l) => l.isNotEmpty).length;
+  final uncommitted =
+      status.trim().split('\n').where((l) => l.isNotEmpty).length;
 
   print('📊 Statistics:');
   print('   Current branch: $branch');
@@ -100,9 +111,12 @@ Examples:
 
   // Commit activity by day of week
   final dayLog = await _runGit(repoPath, [
-    'log', '--format=%ad', '--date=format:%u', '--since=$sinceStr',
+    'log',
+    '--format=%ad',
+    '--date=format:%u',
+    '--since=$sinceStr',
   ]);
-  
+
   final dayCounts = <int, int>{};
   for (final day in dayLog.trim().split('\n').where((l) => l.isNotEmpty)) {
     final d = int.tryParse(day);
@@ -112,7 +126,7 @@ Examples:
   if (dayCounts.isNotEmpty) {
     final days = ['', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
     final maxCount = dayCounts.values.reduce((a, b) => a > b ? a : b);
-    
+
     print('\n📅 Activity by Day:');
     for (var i = 1; i <= 7; i++) {
       final count = dayCounts[i] ?? 0;
@@ -124,9 +138,12 @@ Examples:
   // Most changed files
   if (showFiles) {
     final filesLog = await _runGit(repoPath, [
-      'log', '--pretty=format:', '--name-only', '--since=$sinceStr',
+      'log',
+      '--pretty=format:',
+      '--name-only',
+      '--since=$sinceStr',
     ]);
-    
+
     final fileCounts = <String, int>{};
     for (final file in filesLog.trim().split('\n').where((l) => l.isNotEmpty)) {
       fileCounts[file] = (fileCounts[file] ?? 0) + 1;
@@ -144,9 +161,13 @@ Examples:
   // Recent commits
   print('\n📝 Recent Commits:');
   final recentCommits = await _runGit(repoPath, [
-    'log', '--oneline', '-10', '--since=$sinceStr',
+    'log',
+    '--oneline',
+    '-10',
+    '--since=$sinceStr',
   ]);
-  for (final line in recentCommits.trim().split('\n').where((l) => l.isNotEmpty)) {
+  for (final line
+      in recentCommits.trim().split('\n').where((l) => l.isNotEmpty)) {
     print('   $line');
   }
 }

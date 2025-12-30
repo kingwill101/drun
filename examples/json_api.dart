@@ -14,8 +14,8 @@ const baseUrl = 'https://jsonplaceholder.typicode.com';
 
 Future<void> main(List<String> args) async {
   final parser = ArgParser()
-    ..addOption('endpoint', 
-        abbr: 'e', 
+    ..addOption('endpoint',
+        abbr: 'e',
         help: 'API endpoint (users, posts, comments, todos)',
         defaultsTo: 'users')
     ..addOption('id', help: 'Fetch specific item by ID')
@@ -41,22 +41,22 @@ Future<void> main(List<String> args) async {
   final limit = int.tryParse(results['limit'] as String) ?? 5;
   final pretty = results['pretty'] as bool;
 
-  final url = id != null 
-      ? '$baseUrl/$endpoint/$id' 
+  final url = id != null
+      ? '$baseUrl/$endpoint/$id'
       : '$baseUrl/$endpoint?_limit=$limit';
 
   print('🌐 Fetching: $url\n');
 
   try {
     final response = await http.get(Uri.parse(url));
-    
+
     if (response.statusCode != 200) {
       print('❌ Error: HTTP ${response.statusCode}');
       return;
     }
 
     final data = jsonDecode(response.body);
-    
+
     if (pretty) {
       final encoder = JsonEncoder.withIndent('  ');
       print(encoder.convert(data));

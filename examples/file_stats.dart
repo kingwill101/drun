@@ -13,7 +13,8 @@ import 'package:args/args.dart';
 Future<void> main(List<String> args) async {
   final parser = ArgParser()
     ..addOption('ext', abbr: 'e', help: 'Filter by extension (e.g., dart, js)')
-    ..addFlag('recursive', abbr: 'r', help: 'Scan subdirectories', defaultsTo: true)
+    ..addFlag('recursive',
+        abbr: 'r', help: 'Scan subdirectories', defaultsTo: true)
     ..addFlag('hidden', help: 'Include hidden files', defaultsTo: false)
     ..addFlag('help', abbr: 'h', help: 'Show usage');
 
@@ -49,9 +50,10 @@ Future<void> main(List<String> args) async {
   final extensionStats = <String, int>{};
   final largestFiles = <MapEntry<String, int>>[];
 
-  await for (final entity in dir.list(recursive: recursive, followLinks: false)) {
+  await for (final entity
+      in dir.list(recursive: recursive, followLinks: false)) {
     if (entity is! File) continue;
-    
+
     final name = p.basename(entity.path);
     if (!includeHidden && name.startsWith('.')) continue;
 
@@ -61,14 +63,14 @@ Future<void> main(List<String> args) async {
     try {
       final stat = entity.statSync();
       final lines = entity.readAsLinesSync().length;
-      
+
       totalFiles++;
       totalLines += lines;
       totalBytes += stat.size;
-      
-      extensionStats[ext.isEmpty ? '(no ext)' : ext] = 
+
+      extensionStats[ext.isEmpty ? '(no ext)' : ext] =
           (extensionStats[ext.isEmpty ? '(no ext)' : ext] ?? 0) + 1;
-      
+
       largestFiles.add(MapEntry(entity.path, stat.size));
     } catch (_) {
       // Skip files we can't read
@@ -82,7 +84,7 @@ Future<void> main(List<String> args) async {
   print('   Files: $totalFiles');
   print('   Lines: $totalLines');
   print('   Size:  ${_formatBytes(totalBytes)}');
-  
+
   print('\n📂 By Extension:');
   final sortedExts = extensionStats.entries.toList()
     ..sort((a, b) => b.value.compareTo(a.value));
@@ -93,7 +95,8 @@ Future<void> main(List<String> args) async {
   if (largestFiles.isNotEmpty) {
     print('\n📦 Largest Files:');
     for (final entry in largestFiles.take(5)) {
-      print('   ${_formatBytes(entry.value).padLeft(10)} ${p.relative(entry.key)}');
+      print(
+          '   ${_formatBytes(entry.value).padLeft(10)} ${p.relative(entry.key)}');
     }
   }
 }
@@ -101,6 +104,7 @@ Future<void> main(List<String> args) async {
 String _formatBytes(int bytes) {
   if (bytes < 1024) return '$bytes B';
   if (bytes < 1024 * 1024) return '${(bytes / 1024).toStringAsFixed(1)} KB';
-  if (bytes < 1024 * 1024 * 1024) return '${(bytes / 1024 / 1024).toStringAsFixed(1)} MB';
+  if (bytes < 1024 * 1024 * 1024)
+    return '${(bytes / 1024 / 1024).toStringAsFixed(1)} MB';
   return '${(bytes / 1024 / 1024 / 1024).toStringAsFixed(1)} GB';
 }

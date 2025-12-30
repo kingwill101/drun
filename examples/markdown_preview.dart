@@ -14,8 +14,10 @@ void main(List<String> args) {
   final parser = ArgParser()
     ..addOption('output', abbr: 'o', help: 'Output HTML file')
     ..addFlag('inline-html', help: 'Allow inline HTML', defaultsTo: true)
-    ..addFlag('github', abbr: 'g', help: 'Use GitHub flavored markdown', defaultsTo: true)
-    ..addFlag('wrap', abbr: 'w', help: 'Wrap in HTML document', defaultsTo: true)
+    ..addFlag('github',
+        abbr: 'g', help: 'Use GitHub flavored markdown', defaultsTo: true)
+    ..addFlag('wrap',
+        abbr: 'w', help: 'Wrap in HTML document', defaultsTo: true)
     ..addFlag('help', abbr: 'h', help: 'Show usage');
 
   final results = parser.parse(args);
@@ -51,11 +53,10 @@ Examples:
   print('📄 Converting: $inputPath');
 
   final markdown = file.readAsStringSync();
-  
+
   // Choose extension set based on options
-  final extensionSet = useGfm 
-      ? md.ExtensionSet.gitHubWeb 
-      : md.ExtensionSet.commonMark;
+  final extensionSet =
+      useGfm ? md.ExtensionSet.gitHubWeb : md.ExtensionSet.commonMark;
 
   final html = md.markdownToHtml(
     markdown,

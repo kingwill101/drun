@@ -12,9 +12,11 @@ import 'package:args/args.dart';
 
 Future<void> main(List<String> args) async {
   final parser = ArgParser()
-    ..addOption('ports', abbr: 'p', help: 'Port range (e.g., 1-1000)', defaultsTo: '1-1024')
+    ..addOption('ports',
+        abbr: 'p', help: 'Port range (e.g., 1-1000)', defaultsTo: '1-1024')
     ..addOption('timeout', abbr: 't', help: 'Timeout in ms', defaultsTo: '200')
-    ..addOption('concurrent', abbr: 'c', help: 'Concurrent connections', defaultsTo: '100')
+    ..addOption('concurrent',
+        abbr: 'c', help: 'Concurrent connections', defaultsTo: '100')
     ..addFlag('common', help: 'Scan only common ports', defaultsTo: false)
     ..addFlag('help', abbr: 'h', help: 'Show usage');
 
@@ -72,7 +74,7 @@ Examples:
     final batch = ports.skip(i).take(concurrent);
     final futures = batch.map((port) => _scanPort(host, port, timeout));
     final results = await Future.wait(futures);
-    
+
     for (var j = 0; j < results.length; j++) {
       if (results[j]) {
         final port = ports[i + j];
@@ -81,17 +83,18 @@ Examples:
         print('   ✅ Port $port open ($service)');
       }
     }
-    
+
     scanned += batch.length;
     stdout.write('\r   Scanned: $scanned/${ports.length}');
   }
 
   stopwatch.stop();
-  
+
   print('\n\n📊 Results:');
-  print('   Scanned: ${ports.length} ports in ${stopwatch.elapsedMilliseconds}ms');
+  print(
+      '   Scanned: ${ports.length} ports in ${stopwatch.elapsedMilliseconds}ms');
   print('   Open: ${openPorts.length} ports');
-  
+
   if (openPorts.isNotEmpty) {
     print('\n🔓 Open Ports:');
     for (final port in openPorts) {
@@ -116,8 +119,29 @@ Future<bool> _scanPort(String host, int port, int timeoutMs) async {
 }
 
 const commonPorts = [
-  21, 22, 23, 25, 53, 80, 110, 111, 135, 139, 143, 443, 445, 993, 995,
-  1723, 3306, 3389, 5432, 5900, 8080, 8443, 8888,
+  21,
+  22,
+  23,
+  25,
+  53,
+  80,
+  110,
+  111,
+  135,
+  139,
+  143,
+  443,
+  445,
+  993,
+  995,
+  1723,
+  3306,
+  3389,
+  5432,
+  5900,
+  8080,
+  8443,
+  8888,
 ];
 
 const portServices = {

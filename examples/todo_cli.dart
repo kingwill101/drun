@@ -81,7 +81,7 @@ Examples:
 List<Map<String, dynamic>> _loadTodos() {
   final file = File(todoFile);
   if (!file.existsSync()) return [];
-  
+
   try {
     final content = file.readAsStringSync();
     return List<Map<String, dynamic>>.from(jsonDecode(content));
@@ -102,24 +102,28 @@ void _addTodo(List<Map<String, dynamic>> todos, String task) {
   }
 
   todos.add({
-    'id': todos.isEmpty ? 1 : (todos.map((t) => t['id'] as int).reduce((a, b) => a > b ? a : b) + 1),
+    'id': todos.isEmpty
+        ? 1
+        : (todos.map((t) => t['id'] as int).reduce((a, b) => a > b ? a : b) +
+            1),
     'task': task.trim(),
     'done': false,
     'created': DateTime.now().toIso8601String(),
   });
-  
+
   _saveTodos(todos);
   print('✅ Added: "$task"');
 }
 
 void _listTodos(List<Map<String, dynamic>> todos) {
   if (todos.isEmpty) {
-    print('📭 No todos yet! Add one with: drun todo_cli.dart -- add "Your task"');
+    print(
+        '📭 No todos yet! Add one with: drun todo_cli.dart -- add "Your task"');
     return;
   }
 
   print('📝 Your Todos:\n');
-  
+
   final pending = todos.where((t) => t['done'] != true).toList();
   final completed = todos.where((t) => t['done'] == true).toList();
 

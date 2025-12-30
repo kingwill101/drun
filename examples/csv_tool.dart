@@ -13,7 +13,8 @@ import 'package:args/args.dart';
 
 void main(List<String> args) {
   final parser = ArgParser()
-    ..addOption('columns', abbr: 'c', help: 'Columns to display (comma-separated)')
+    ..addOption('columns',
+        abbr: 'c', help: 'Columns to display (comma-separated)')
     ..addOption('filter', abbr: 'f', help: 'Filter expression (e.g., "age>30")')
     ..addOption('limit', abbr: 'l', help: 'Limit number of rows')
     ..addOption('output', abbr: 'o', help: 'Output to JSON file')
@@ -49,7 +50,7 @@ Sample CSV content for testing:
 
   final inputPath = results.rest.first;
   final file = File(inputPath);
-  
+
   if (!file.existsSync()) {
     // Create sample CSV for demo
     if (inputPath == 'sample.csv') {
@@ -72,7 +73,8 @@ Sample CSV content for testing:
   }
 
   final hasHeader = !(results['no-header'] as bool);
-  final headers = hasHeader ? rows.first.map((e) => e.toString()).toList() : null;
+  final headers =
+      hasHeader ? rows.first.map((e) => e.toString()).toList() : null;
   var dataRows = hasHeader ? rows.skip(1).toList() : rows;
 
   print('📄 File: $inputPath');
@@ -93,7 +95,7 @@ Sample CSV content for testing:
         .map((c) => headers.indexOf(c))
         .where((i) => i >= 0)
         .toList();
-    
+
     if (columnIndices.isEmpty) {
       print('❌ No matching columns found');
       print('   Available: ${headers.join(', ')}');
@@ -118,7 +120,8 @@ Sample CSV content for testing:
   }
 }
 
-void _displayTable(List<String>? headers, List<List<dynamic>> rows, List<int>? indices) {
+void _displayTable(
+    List<String>? headers, List<List<dynamic>> rows, List<int>? indices) {
   final displayHeaders = indices != null && headers != null
       ? indices.map((i) => headers[i]).toList()
       : headers;
@@ -130,7 +133,7 @@ void _displayTable(List<String>? headers, List<List<dynamic>> rows, List<int>? i
   // Calculate column widths
   final widths = <int>[];
   final colCount = displayRows.isNotEmpty ? displayRows.first.length : 0;
-  
+
   for (var i = 0; i < colCount; i++) {
     var maxWidth = displayHeaders?[i].length ?? 0;
     for (final row in displayRows) {
@@ -142,7 +145,9 @@ void _displayTable(List<String>? headers, List<List<dynamic>> rows, List<int>? i
 
   // Print header
   if (displayHeaders != null) {
-    final headerRow = displayHeaders.asMap().entries
+    final headerRow = displayHeaders
+        .asMap()
+        .entries
         .map((e) => e.value.padRight(widths[e.key]))
         .join(' │ ');
     print('┌─${widths.map((w) => '─' * w).join('─┬─')}─┐');
@@ -152,8 +157,13 @@ void _displayTable(List<String>? headers, List<List<dynamic>> rows, List<int>? i
 
   // Print rows
   for (final row in displayRows.take(20)) {
-    final dataRow = row.asMap().entries
-        .map((e) => e.value.toString().padRight(widths[e.key]).substring(0, widths[e.key]))
+    final dataRow = row
+        .asMap()
+        .entries
+        .map((e) => e.value
+            .toString()
+            .padRight(widths[e.key])
+            .substring(0, widths[e.key]))
         .join(' │ ');
     print('│ $dataRow │');
   }
@@ -166,15 +176,16 @@ void _displayTable(List<String>? headers, List<List<dynamic>> rows, List<int>? i
 
 void _showStats(List<String> headers, List<List<dynamic>> rows) {
   print('📊 Column Statistics:\n');
-  
+
   for (var i = 0; i < headers.length; i++) {
     final values = rows.map((r) => r[i]).toList();
     final nonNull = values.where((v) => v != null && v.toString().isNotEmpty);
-    final numeric = nonNull.map((v) => num.tryParse(v.toString())).whereType<num>();
-    
+    final numeric =
+        nonNull.map((v) => num.tryParse(v.toString())).whereType<num>();
+
     print('${headers[i]}:');
     print('   Non-empty: ${nonNull.length}/${values.length}');
-    
+
     if (numeric.isNotEmpty) {
       final nums = numeric.toList();
       final sum = nums.reduce((a, b) => a + b);
@@ -193,15 +204,14 @@ void _showStats(List<String> headers, List<List<dynamic>> rows) {
   }
 }
 
-void _outputJson(List<String> headers, List<List<dynamic>> rows, String path, List<int>? indices) {
-  final effectiveHeaders = indices != null 
-      ? indices.map((i) => headers[i]).toList() 
-      : headers;
-  
+void _outputJson(List<String> headers, List<List<dynamic>> rows, String path,
+    List<int>? indices) {
+  final effectiveHeaders =
+      indices != null ? indices.map((i) => headers[i]).toList() : headers;
+
   final jsonRows = rows.map((row) {
-    final effectiveRow = indices != null 
-        ? indices.map((i) => row[i]).toList() 
-        : row;
+    final effectiveRow =
+        indices != null ? indices.map((i) => row[i]).toList() : row;
     return Map.fromIterables(effectiveHeaders, effectiveRow);
   }).toList();
 
@@ -212,7 +222,7 @@ void _outputJson(List<String> headers, List<List<dynamic>> rows, String path, Li
     output.writeln();
   }
   output.write(']');
-  
+
   File(path).writeAsStringSync(output.toString());
   print('\n✅ Written to: $path');
 }
@@ -236,6 +246,6 @@ Eve Wilson,26,eve@example.com,Boston,70000
 Frank Miller,45,frank@example.com,Denver,110000
 Grace Lee,33,grace@example.com,Austin,79000
 Henry Davis,29,henry@example.com,Portland,72000''';
-  
+
   File('sample.csv').writeAsStringSync(sample);
 }
