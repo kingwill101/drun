@@ -1,10 +1,10 @@
-#!/usr/bin/env drun
+#!/usr/bin/env dartrun
 //! dart-deps: path="^1.9.0", args="^2.6.0"
 //! dart-sdk: ">=3.5.0 <4.0.0"
 
 /// Analyze files in a directory - count lines, files, extensions
-/// Usage: drun file_stats.dart -- /path/to/directory
-///        drun file_stats.dart -- . --ext dart
+/// Usage: dartrun file_stats.dart -- /path/to/directory
+///        dartrun file_stats.dart -- . --ext dart
 
 import 'dart:io';
 import 'package:path/path.dart' as p;
@@ -22,12 +22,12 @@ Future<void> main(List<String> args) async {
 
   if (results['help'] as bool || results.rest.isEmpty) {
     print('File Statistics - Analyze files in a directory\n');
-    print('Usage: drun file_stats.dart -- <directory> [options]\n');
+    print('Usage: dartrun file_stats.dart -- <directory> [options]\n');
     print(parser.usage);
     print('\nExamples:');
-    print('  drun file_stats.dart -- .');
-    print('  drun file_stats.dart -- ./lib --ext dart');
-    print('  drun file_stats.dart -- . --no-recursive');
+    print('  dartrun file_stats.dart -- .');
+    print('  dartrun file_stats.dart -- ./lib --ext dart');
+    print('  dartrun file_stats.dart -- . --no-recursive');
     return;
   }
 

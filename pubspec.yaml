@@ -1,7 +1,7 @@
-name: drun
+name: dartrun
 description: A Cargo-style script runner for Dart with embedded manifests
 version: 1.0.0-dev.1
-homepage: https://github.com/kingwill101/drun
+homepage: https://github.com/kingwill101/dartrun
 
 environment:
   sdk: '>=3.5.0 <4.0.0'

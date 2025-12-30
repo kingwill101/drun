@@ -1,4 +1,4 @@
-#!/usr/bin/env drun
+#!/usr/bin/env dartrun
 //! pubspec:
 /// name: todo_cli
 /// environment:
@@ -9,9 +9,9 @@
 ///
 
 /// A simple todo list manager with file persistence
-/// Usage: drun todo_cli.dart -- add "Buy groceries"
-///        drun todo_cli.dart -- list
-///        drun todo_cli.dart -- done 1
+/// Usage: dartrun todo_cli.dart -- add "Buy groceries"
+///        dartrun todo_cli.dart -- list
+///        dartrun todo_cli.dart -- done 1
 
 import 'dart:io';
 import 'dart:convert';
@@ -61,7 +61,7 @@ void _printUsage() {
   print('''
 📝 Todo CLI - A simple todo list manager
 
-Usage: drun todo_cli.dart -- <command> [arguments]
+Usage: dartrun todo_cli.dart -- <command> [arguments]
 
 Commands:
   add <task>     Add a new todo item
@@ -71,10 +71,10 @@ Commands:
   clear          Remove all completed todos
 
 Examples:
-  drun todo_cli.dart -- add "Buy groceries"
-  drun todo_cli.dart -- list
-  drun todo_cli.dart -- done 1
-  drun todo_cli.dart -- clear
+  dartrun todo_cli.dart -- add "Buy groceries"
+  dartrun todo_cli.dart -- list
+  dartrun todo_cli.dart -- done 1
+  dartrun todo_cli.dart -- clear
 ''');
 }
 
@@ -118,7 +118,7 @@ void _addTodo(List<Map<String, dynamic>> todos, String task) {
 void _listTodos(List<Map<String, dynamic>> todos) {
   if (todos.isEmpty) {
     print(
-        '📭 No todos yet! Add one with: drun todo_cli.dart -- add "Your task"');
+        '📭 No todos yet! Add one with: dartrun todo_cli.dart -- add "Your task"');
     return;
   }
 

@@ -1,6 +1,6 @@
 import 'package:test/test.dart';
-import 'package:drun/src/header.dart';
-import 'package:drun/src/cache.dart';
+import 'package:dartrun/src/header.dart';
+import 'package:dartrun/src/cache.dart';
 
 void main() {
   group('HeaderParser', () {

@@ -1,4 +1,4 @@
-#!/usr/bin/env drun
+#!/usr/bin/env dartrun
 //! pubspec:
 /// name: shelf_server
 /// environment:
@@ -11,7 +11,7 @@
 /// A simple REST API server using shelf
 /// Demonstrates routing, middleware, and JSON responses
 ///
-/// Usage: drun shelf_server.dart
+/// Usage: dartrun shelf_server.dart
 /// Then visit: http://localhost:8080
 
 import 'dart:convert';

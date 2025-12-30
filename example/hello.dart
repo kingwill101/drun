@@ -1,4 +1,4 @@
-#!/usr/bin/env drun
+#!/usr/bin/env dartrun
 //! dart-deps:
 //! dart-sdk: ">=3.5.0 <4.0.0"
 

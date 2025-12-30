@@ -1,10 +1,10 @@
-#!/usr/bin/env drun
+#!/usr/bin/env dartrun
 //! dart-deps: args="^2.6.0"
 //! dart-sdk: ">=3.5.0 <4.0.0"
 
 /// Simple TCP port scanner
-/// Usage: drun port_scanner.dart -- localhost
-///        drun port_scanner.dart -- 192.168.1.1 --ports 20-100
+/// Usage: dartrun port_scanner.dart -- localhost
+///        dartrun port_scanner.dart -- 192.168.1.1 --ports 20-100
 
 import 'dart:io';
 import 'dart:async';
@@ -26,16 +26,16 @@ Future<void> main(List<String> args) async {
     print('''
 🔍 Port Scanner - TCP port scanner
 
-Usage: drun port_scanner.dart -- <host> [options]
+Usage: dartrun port_scanner.dart -- <host> [options]
 
 Options:
 ${parser.usage}
 
 Examples:
-  drun port_scanner.dart -- localhost
-  drun port_scanner.dart -- 192.168.1.1 --ports 80-443
-  drun port_scanner.dart -- example.com --common
-  drun port_scanner.dart -- localhost -p 1-65535 -c 200
+  dartrun port_scanner.dart -- localhost
+  dartrun port_scanner.dart -- 192.168.1.1 --ports 80-443
+  dartrun port_scanner.dart -- example.com --common
+  dartrun port_scanner.dart -- localhost -p 1-65535 -c 200
 ''');
     return;
   }

@@ -1,10 +1,10 @@
-#!/usr/bin/env drun
+#!/usr/bin/env dartrun
 //! dart-deps: args="^2.6.0", path="^1.9.0"
 //! dart-sdk: ">=3.5.0 <4.0.0"
 
 /// Git repository statistics - analyze commits, contributors, and activity
-/// Usage: drun git_stats.dart -- /path/to/repo
-///        drun git_stats.dart -- . --days 30
+/// Usage: dartrun git_stats.dart -- /path/to/repo
+///        dartrun git_stats.dart -- . --days 30
 
 import 'dart:io';
 import 'package:args/args.dart';
@@ -23,16 +23,16 @@ Future<void> main(List<String> args) async {
     print('''
 📊 Git Stats - Repository analytics
 
-Usage: drun git_stats.dart -- [repo-path] [options]
+Usage: dartrun git_stats.dart -- [repo-path] [options]
 
 Options:
 ${parser.usage}
 
 Examples:
-  drun git_stats.dart -- .
-  drun git_stats.dart -- ~/projects/myrepo --days 30
-  drun git_stats.dart -- . --author "John Doe"
-  drun git_stats.dart -- . --files
+  dartrun git_stats.dart -- .
+  dartrun git_stats.dart -- ~/projects/myrepo --days 30
+  dartrun git_stats.dart -- . --author "John Doe"
+  dartrun git_stats.dart -- . --files
 ''');
     return;
   }

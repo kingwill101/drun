@@ -1,4 +1,4 @@
-#!/usr/bin/env drun
+#!/usr/bin/env dartrun
 //! dart-deps: http="^1.1.0"
 
 import 'package:http/http.dart' as http;

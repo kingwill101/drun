@@ -1,11 +1,11 @@
-#!/usr/bin/env drun
+#!/usr/bin/env dartrun
 //! dart-deps: csv="^6.0.0", args="^2.6.0"
 //! dart-sdk: ">=3.5.0 <4.0.0"
 
 /// CSV file processing tool - view, filter, and convert CSV files
-/// Usage: drun csv_tool.dart -- data.csv
-///        drun csv_tool.dart -- data.csv --filter "age>30"
-///        drun csv_tool.dart -- data.csv --columns name,email
+/// Usage: dartrun csv_tool.dart -- data.csv
+///        dartrun csv_tool.dart -- data.csv --filter "age>30"
+///        dartrun csv_tool.dart -- data.csv --columns name,email
 
 import 'dart:io';
 import 'package:csv/csv.dart';
@@ -28,16 +28,16 @@ void main(List<String> args) {
     print('''
 📊 CSV Tool - Process and analyze CSV files
 
-Usage: drun csv_tool.dart -- <file.csv> [options]
+Usage: dartrun csv_tool.dart -- <file.csv> [options]
 
 Options:
 ${parser.usage}
 
 Examples:
-  drun csv_tool.dart -- data.csv
-  drun csv_tool.dart -- users.csv -c name,email -l 10
-  drun csv_tool.dart -- data.csv --stats
-  drun csv_tool.dart -- data.csv -o output.json
+  dartrun csv_tool.dart -- data.csv
+  dartrun csv_tool.dart -- users.csv -c name,email -l 10
+  dartrun csv_tool.dart -- data.csv --stats
+  dartrun csv_tool.dart -- data.csv -o output.json
 
 Sample CSV content for testing:
   name,age,email,city

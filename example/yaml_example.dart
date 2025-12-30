@@ -1,4 +1,4 @@
-#!/usr/bin/env drun
+#!/usr/bin/env dartrun
 //! pubspec:
 /// name: yaml_demo
 /// environment:

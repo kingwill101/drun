@@ -1,10 +1,10 @@
-#!/usr/bin/env drun
+#!/usr/bin/env dartrun
 //! dart-deps: args="^2.6.0", path="^1.9.0"
 //! dart-sdk: ">=3.5.0 <4.0.0"
 
 /// Development environment checker - verify tools and configurations
-/// Usage: drun env_check.dart
-///        drun env_check.dart -- --verbose
+/// Usage: dartrun env_check.dart
+///        dartrun env_check.dart -- --verbose
 
 import 'dart:io';
 import 'package:args/args.dart';
@@ -21,7 +21,7 @@ Future<void> main(List<String> args) async {
     print('''
 🔧 Environment Checker - Verify your development setup
 
-Usage: drun env_check.dart -- [options]
+Usage: dartrun env_check.dart -- [options]
 
 Options:
 ${parser.usage}

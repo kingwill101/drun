@@ -1,10 +1,10 @@
-#!/usr/bin/env drun
+#!/usr/bin/env dartrun
 //! dart-deps: http="^1.1.0", args="^2.6.0"
 //! dart-sdk: ">=3.5.0 <4.0.0"
 
 /// Fetch and display data from a JSON API
-/// Usage: drun json_api.dart -- --endpoint users
-///        drun json_api.dart -- --endpoint posts --id 1
+/// Usage: dartrun json_api.dart -- --endpoint users
+///        dartrun json_api.dart -- --endpoint posts --id 1
 
 import 'dart:convert';
 import 'package:http/http.dart' as http;
@@ -27,12 +27,12 @@ Future<void> main(List<String> args) async {
 
   if (results['help'] as bool) {
     print('JSON API Client - Fetch data from JSONPlaceholder API\n');
-    print('Usage: drun json_api.dart -- [options]\n');
+    print('Usage: dartrun json_api.dart -- [options]\n');
     print(parser.usage);
     print('\nExamples:');
-    print('  drun json_api.dart -- -e users -l 3');
-    print('  drun json_api.dart -- -e posts --id 1');
-    print('  drun json_api.dart -- -e todos -l 10');
+    print('  dartrun json_api.dart -- -e users -l 3');
+    print('  dartrun json_api.dart -- -e posts --id 1');
+    print('  dartrun json_api.dart -- -e todos -l 10');
     return;
   }
 

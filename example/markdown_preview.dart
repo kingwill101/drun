@@ -1,10 +1,10 @@
-#!/usr/bin/env drun
+#!/usr/bin/env dartrun
 //! dart-deps: markdown="^7.2.2", args="^2.6.0"
 //! dart-sdk: ">=3.5.0 <4.0.0"
 
 /// Convert Markdown to HTML and optionally serve it
-/// Usage: drun markdown_preview.dart -- README.md
-///        drun markdown_preview.dart -- README.md -o output.html
+/// Usage: dartrun markdown_preview.dart -- README.md
+///        dartrun markdown_preview.dart -- README.md -o output.html
 
 import 'dart:io';
 import 'package:markdown/markdown.dart' as md;
@@ -26,15 +26,15 @@ void main(List<String> args) {
     print('''
 📝 Markdown Preview - Convert Markdown to HTML
 
-Usage: drun markdown_preview.dart -- <file.md> [options]
+Usage: dartrun markdown_preview.dart -- <file.md> [options]
 
 Options:
 ${parser.usage}
 
 Examples:
-  drun markdown_preview.dart -- README.md
-  drun markdown_preview.dart -- doc.md -o preview.html
-  drun markdown_preview.dart -- README.md --no-github
+  dartrun markdown_preview.dart -- README.md
+  dartrun markdown_preview.dart -- doc.md -o preview.html
+  dartrun markdown_preview.dart -- README.md --no-github
 ''');
     return;
   }

@@ -1,10 +1,10 @@
 import 'dart:io';
 import 'package:artisanal/args.dart';
 import 'package:artisanal/artisanal.dart' show Verbosity;
-import 'package:drun/src/header.dart';
-import 'package:drun/src/cache.dart';
-import 'package:drun/src/pub.dart';
-import 'package:drun/src/run.dart';
+import 'package:dartrun/src/header.dart';
+import 'package:dartrun/src/cache.dart';
+import 'package:dartrun/src/pub.dart';
+import 'package:dartrun/src/run.dart';
 
 Future<void> main(List<String> arguments) async {
   final runner = DrunCommandRunner();

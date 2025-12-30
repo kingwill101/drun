@@ -1,6 +1,6 @@
-# drun - Cargo-style Script Runner for Dart
+# dartrun - Cargo-style Script Runner for Dart
 
-`drun` is a Cargo-inspired script runner for Dart that allows you to run single-file Dart scripts with embedded dependency manifests. Just like `cargo-script` or Rust's RFC 3424, `drun` materializes temporary packages, caches build artifacts, and provides near-zero startup time for subsequent runs.
+`dartrun` is a Cargo-inspired script runner for Dart that allows you to run single-file Dart scripts with embedded dependency manifests. Just like `cargo-script` or Rust's RFC 3424, `dartrun` materializes temporary packages, caches build artifacts, and provides near-zero startup time for subsequent runs.
 
 ## Features
 
@@ -14,16 +14,16 @@
 ## Installation
 
 ```bash
-dart pub global activate drun
+dart pub global activate dartrun
 ```
 
 Or build from source:
 
 ```bash
-git clone https://github.com/your-org/drun.git
-cd drun
+git clone https://github.com/kingwill101/dartrun.git
+cd dartrun
 dart pub get
-dart compile exe bin/drun.dart -o drun
+dart compile exe bin/drun.dart -o dartrun
 ```
 
 ## Quick Start
@@ -43,14 +43,14 @@ void main(List<String> args) {
 
 Run with:
 ```bash
-drun hello.dart -- Dart
+dartrun hello.dart -- Dart
 # Output: Hello, Dart!
 ```
 
 ### 2. HTTP Client Example
 
 ```dart
-#!/usr/bin/env drun
+#!/usr/bin/env dartrun
 //! dart-deps: http="^1.1.0"
 
 import 'package:http/http.dart' as http;
@@ -68,7 +68,7 @@ Future<void> main(List<String> args) async {
 ### 3. Full Pubspec Block (Advanced)
 
 ```dart
-#!/usr/bin/env drun
+#!/usr/bin/env dartrun
 //! pubspec:
 /// name: advanced_script
 /// environment:

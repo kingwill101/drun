@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [1.0.0-dev.1] - 2025-12-30
 
 ### Added
-- Initial release of drun - A Cargo-style script runner for Dart
+- Initial release of dartrun - A Cargo-style script runner for Dart
 - Support for embedded manifests in Dart scripts
 - Inline dependency declarations using `//! dart-deps:` syntax
 - Multi-line YAML dependency blocks using `//! dart-yaml` markers
